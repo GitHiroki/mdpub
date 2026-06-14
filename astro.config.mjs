@@ -11,17 +11,22 @@ export default defineConfig({
             title: 'My Docs',
             social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
             sidebar: [
+                // TODO: 後で消す。
+                // {
+                //     label: 'Guides',
+                //     items: [
+                //         // Each item here is one entry in the navigation menu.
+                //         { label: 'Example Guide', slug: 'guides/example' },
+                //     ],
+                // },
+                // {
+                //     label: 'Reference',
+                //     items: [{ autogenerate: { directory: 'reference' } }],
+                // },
                 {
-                    label: 'Guides',
-                    items: [
-                        // Each item here is one entry in the navigation menu.
-                        { label: 'Example Guide', slug: 'guides/example' },
-                    ],
-                },
-                {
-                    label: 'Reference',
-                    items: [{ autogenerate: { directory: 'reference' } }],
-                },
+                    label: 'テスト',
+                    items: [{ autogenerate: { directory: 'test' } }],
+                }
             ],
             head: [
                 {

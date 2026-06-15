@@ -1,6 +1,10 @@
 ---
 title: OKF深掘り（圧縮版）
 description: OKFを「なぜ標準化したか」「流行るか」「どう使うか」の3論点に圧縮
+sidebar:
+  badge:
+    text: 新規
+    variant: tip
 ---
 
 # OKF深掘り（圧縮版）

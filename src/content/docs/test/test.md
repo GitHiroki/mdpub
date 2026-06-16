@@ -1,6 +1,10 @@
 ---
 title: テスト投稿
 description: mdpubの動作確認用ページ
+sidebar:
+  badge:
+    text: 更新
+    variant: note
 ---
 
 # はじめてのmdpub
@@ -16,3 +20,7 @@ description: mdpubの動作確認用ページ
 ## 感想
 
 pushするだけで公開されるのは思ったより気持ちいい。
+
+## 更新してみる。
+
+- バッチがちゃんとつくかテスト。

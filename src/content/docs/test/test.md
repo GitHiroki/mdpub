@@ -1,10 +1,6 @@
 ---
 title: テスト投稿
 description: mdpubの動作確認用ページ
-sidebar:
-  badge:
-    text: 更新
-    variant: note
 ---
 
 # はじめてのmdpub

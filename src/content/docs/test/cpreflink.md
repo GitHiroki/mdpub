@@ -1,10 +1,6 @@
 ---
 title: cpコマンドとreflink - ディスクにコピーしないcpの話
 description: cpコマンドの裏側にあるreflink・CoW・inode・Dockerレイヤーとの関係を整理したメモ
-sidebar:
-  badge:
-    text: 新規
-    variant: tip
 ---
 
 ## TL;DR

@@ -29,6 +29,21 @@ jobs:
       - name: Notify Slack
         if: success()
         run: |
+          BASE_URL="https://mdpub-56e.pages.dev"
+          NEW_FILES=$(git diff --name-only --diff-filter=A HEAD~1 HEAD -- 'src/content/docs/' 2>/dev/null || true)
+
+          MESSAGE="mdpub デプロイ完了 🚀"
+
+          if [ -n "$NEW_FILES" ]; then
+            LINKS=""
+            while IFS= read -r file; do
+              path="${file#src/content/docs/}"
+              path="${path%.md}"
+              LINKS="${LINKS}\n• ${BASE_URL}/${path}/"
+            done <<< "$NEW_FILES"
+            MESSAGE="${MESSAGE}\n新規ページ:${LINKS}"
+          fi
+
           curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"mdpub デプロイ完了 🚀"}' \
-          ${{ secrets.SLACK_WEBHOOK_URL }}
+            --data "{\"text\":\"$(echo -e "$MESSAGE")\"}" \
+            ${{ secrets.SLACK_WEBHOOK_URL }}

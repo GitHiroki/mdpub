@@ -1,10 +1,6 @@
 ---
 title: hoge+fuga@example.com は「エイリアス」ではない（壁打ちまとめ）
 description: subaddress（+記法）と本来のエイリアス（/etc/aliases）の違い、なぜRFCが+の意味を規格化しなかったのかを整理した学習ログ
-sidebar:
-  badge:
-    text: 新規
-    variant: tip
 ---
 
 ## 元記事

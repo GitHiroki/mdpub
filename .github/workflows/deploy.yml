@@ -30,7 +30,7 @@ jobs:
         if: success()
         run: |
           BASE_URL="https://mdpub-56e.pages.dev"
-          NEW_FILES=$(git diff --name-only --diff-filter=A HEAD~1 HEAD -- 'src/content/docs/' 2>/dev/null || true)
+          NEW_FILES=$(git diff --name-only --diff-filter=A HEAD^1...HEAD -- 'src/content/docs/' 2>/dev/null || true)
 
           MESSAGE="mdpub デプロイ完了 🚀"
 

@@ -3,8 +3,8 @@ title: Slack通知テスト
 description: テスト２
 sidebar:
   badge:
-    text: 新規
-    variant: tip
+    text: 更新
+    variant: note
 ---
 
 # テスト２

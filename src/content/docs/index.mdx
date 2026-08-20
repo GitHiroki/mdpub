@@ -1,44 +1,39 @@
 ---
-title: Welcome to Starlight
-description: Get started building your docs site with Starlight.
-# template: splash # Remove or comment out this line to display the site sidebar on this page.
+title: mdpub
+description: 壁打ちしながら学んだことを積んでいく個人Wiki。メモごとにコメントできます。
 hero:
-  tagline: Congrats on setting up a new Starlight project!
+  tagline: 壁打ちしながら学んだことを、メモにして積んでいく場所。気になったページにはコメントを残せます。
   image:
     file: ../../assets/houston.webp
   actions:
-    - text: Example Guide
-      link: /guides/example/
+    - text: 新着メモを見る
+      link: '#recent'
       icon: right-arrow
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
+    - text: GitHub
+      link: https://github.com/GitHiroki/mdpub
       icon: external
       variant: minimal
+head:
+  # ページタイトルがサイトタイトルと同じで「mdpub | mdpub」になるのを防ぐ
+  - tag: title
+    content: mdpub — 学習メモ置き場
 ---
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
+import RecentDocs from '../../components/RecentDocs.astro';
 
-## Next steps
+<RecentDocs />
 
-<CardGrid stagger>
-	<Card title="Update content" icon="pencil">
-		Edit `src/content/docs/index.mdx` to see this page change.
+## このサイトについて
+
+<CardGrid>
+	<Card title="学習メモ置き場" icon="pencil">
+		調べたこと・壁打ちして整理したことを、あとから読み返せる形で残しています。
 	</Card>
-	<Card title="Change page layout" icon="document">
-		Delete `template: splash` in `src/content/docs/index.mdx` to display a
-		sidebar on this page.
+	<Card title="コメントできます" icon="comment">
+		各ページの下にコメント欄があります。ツッコミや補足は話のタネとして歓迎です。
 	</Card>
-	<Card title="Add new content" icon="add-document">
-		Add Markdown or MDX files to `src/content/docs` to create new pages.
-	</Card>
-	<Card title="Configure your site" icon="setting">
-		Edit your `sidebar` and other config in `astro.config.mjs`.
-	</Card>
-	<Card title="Read the docs" icon="open-book">
-		Learn more in [the Starlight Docs](https://starlight.astro.build/).
+	<Card title="更新は自動で載ります" icon="rocket">
+		追加・更新したメモには「新規」「更新」のバッジが付き、このページの新着にも並びます。
 	</Card>
 </CardGrid>
-
-## テスト
-
-- Hello World

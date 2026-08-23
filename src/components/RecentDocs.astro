@@ -26,8 +26,6 @@ const recent = (await getCollection('docs'))
     });
 ---
 
-<h2 id="recent">新着メモ</h2>
-
 {
     recent.length === 0 ? (
         <p>いまのところ新着はありません。サイドバーから過去のメモをどうぞ。</p>

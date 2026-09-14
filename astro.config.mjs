@@ -10,12 +10,6 @@ export default defineConfig({
         starlight({
             title: 'mdpub',
             social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/GitHiroki/mdpub' }],
-            sidebar: [
-                {
-                    label: 'テスト',
-                    items: [{ autogenerate: { directory: 'test' } }],
-                }
-            ],
             head: [
                 {
                     tag: 'meta',

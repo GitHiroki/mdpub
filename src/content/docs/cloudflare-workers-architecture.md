@@ -1,10 +1,6 @@
 ---
 title: Cloudflare Workers のアーキテクチャと env の注入タイミング
 description: V8 isolate による分離の仕組みと、env がいつどこから注入されるのかを、誤解が解けていく順に辿った記録。
-sidebar:
-  badge:
-    text: 新規
-    variant: tip
 ---
 
 ## 追いかけた3つの疑問

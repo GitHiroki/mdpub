@@ -3,10 +3,6 @@ title: claude.aiを2週間で3倍速くした話を深掘る
 description: Anthropicの性能改善スプリント記事を題材に、「測れれば登れる」「代理指標の相関」「人間の役割の移行」「ガードレール設計」の4点を壁打ちで検討した記録
 tags: [AIエージェント, パフォーマンス, 計測, ガードレール, PM, Claude]
 timestamp: 2026-09-24
-sidebar:
-  badge:
-    text: 新規
-    variant: tip
 ---
 
 ## 元記事

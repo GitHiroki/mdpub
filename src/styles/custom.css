@@ -1,0 +1,30 @@
+/* アクセントカラー: アイコン（#0f8f83）に合わせたティール。既定はダーク、下はライト */
+:root {
+    --sl-color-accent-low: hsl(174, 60%, 15%);
+    --sl-color-accent: hsl(174, 72%, 40%);
+    --sl-color-accent-high: hsl(172, 70%, 80%);
+}
+
+:root[data-theme='light'] {
+    --sl-color-accent-low: hsl(172, 60%, 88%);
+    --sl-color-accent: hsl(174, 85%, 30%);
+    --sl-color-accent-high: hsl(176, 80%, 20%);
+}
+
+/* トップページのアイコン＋一行説明 */
+.mdpub-intro {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.mdpub-intro img {
+    flex: none;
+    width: 48px;
+    height: 48px;
+}
+
+.mdpub-intro p {
+    margin: 0;
+    color: var(--sl-color-gray-2);
+}

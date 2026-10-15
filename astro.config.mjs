@@ -15,6 +15,9 @@ export default defineConfig({
         }),
         starlight({
             title: 'mdpub',
+            logo: { src: './src/assets/mdpub-icon.svg' },
+            favicon: '/favicon.svg',
+            customCss: ['./src/styles/custom.css'],
             social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/GitHiroki/mdpub' }],
             head: [
                 {

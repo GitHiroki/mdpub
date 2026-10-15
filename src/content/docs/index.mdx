@@ -1,41 +1,21 @@
 ---
 title: mdpub
 description: 壁打ちしながら学んだことを積んでいく個人Wiki。メモごとにコメントできます。
-hero:
-  tagline: 壁打ちしながら学んだことを、メモにして積んでいく場所。気になったページにはコメントを残せます。
-  image:
-    file: ../../assets/houston.webp
-  actions:
-    - text: 新着メモを見る
-      link: '#新着メモ'
-      icon: right-arrow
-    - text: GitHub
-      link: https://github.com/GitHiroki/mdpub
-      icon: external
-      variant: minimal
+tableOfContents: false
 head:
   # ページタイトルがサイトタイトルと同じで「mdpub | mdpub」になるのを防ぐ
   - tag: title
     content: mdpub — 学習メモ置き場
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
 import RecentDocs from '../../components/RecentDocs.astro';
+import icon from '../../assets/mdpub-icon.svg';
+
+<div class="mdpub-intro">
+	<img src={icon.src} width="48" height="48" alt="" />
+	<p>壁打ちしながら学んだことを、メモにして積んでいく場所。</p>
+</div>
 
 ## 新着メモ
 
 <RecentDocs />
-
-## このサイトについて
-
-<CardGrid>
-	<Card title="学習メモ置き場" icon="pencil">
-		調べたこと・壁打ちして整理したことを、あとから読み返せる形で残しています。
-	</Card>
-	<Card title="コメントできます" icon="comment">
-		各ページの下にコメント欄があります。ツッコミや補足は話のタネとして歓迎です。
-	</Card>
-	<Card title="更新は自動で載ります" icon="rocket">
-		追加・更新したメモには「新規」「更新」のバッジが付き、このページの新着にも並びます。
-	</Card>
-</CardGrid>

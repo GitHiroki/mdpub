@@ -3,10 +3,6 @@ title: 文章を書かない「判断特化AI」Jevをざっくり理解する
 description: TypeSafe AIのJevは何者か。LLMとの違い、確率の意味、RLCD、位置づけ、苦手なことを壁打ちで整理した記録
 tags: [AI, Jev, TypeSafe, LLM, 判断モデル, RLCD]
 timestamp: 2026-10-13
-sidebar:
-  badge:
-    text: 新規
-    variant: tip
 ---
 
 ## 一言でいうと

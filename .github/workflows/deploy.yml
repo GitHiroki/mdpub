@@ -31,22 +31,41 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       - name: Notify Slack
         if: success()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
           BASE_URL="https://mdpub-56e.pages.dev"
           NEW_FILES=$(git diff --name-only --diff-filter=A HEAD^1...HEAD -- 'src/content/docs/' 2>/dev/null || true)
 
+          # frontmatter から title を取り出す（前後のクォートは除去）
+          get_title() {
+            awk 'NR==1 && $0!="---" {exit} NR>1 && $0=="---" {exit} NR>1 && /^title:/ {sub(/^title:[ \t]*/, ""); print; exit}' "$1" \
+              | tr -d '\r' \
+              | sed -E "s/^\"(.*)\"$/\1/; s/^'(.*)'$/\1/"
+          }
+
+          # Slack mrkdwn の制御文字をエスケープ
+          escape_mrkdwn() {
+            sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g'
+          }
+
           MESSAGE="mdpub デプロイ完了 🚀"
 
           if [ -n "$NEW_FILES" ]; then
-            LINKS=""
+            MESSAGE="${MESSAGE}"$'\n'"新規ページ:"
             while IFS= read -r file; do
               path="${file#src/content/docs/}"
               path="${path%.md}"
-              LINKS="${LINKS}\n• ${BASE_URL}/${path}/"
+              path="${path%.mdx}"
+              url="${BASE_URL}/${path}/"
+              title=$(get_title "$file" | escape_mrkdwn)
+              if [ -n "$title" ]; then
+                MESSAGE="${MESSAGE}"$'\n'"• <${url}|${title}>"
+              else
+                MESSAGE="${MESSAGE}"$'\n'"• ${url}"
+              fi
             done <<< "$NEW_FILES"
-            MESSAGE="${MESSAGE}\n新規ページ:${LINKS}"
           fi
 
-          curl -X POST -H 'Content-type: application/json' \
-            --data "{\"text\":\"$(echo -e "$MESSAGE")\"}" \
-            ${{ secrets.SLACK_WEBHOOK_URL }}
+          jq -n --arg text "$MESSAGE" '{text: $text}' \
+            | curl -sS -X POST -H 'Content-type: application/json' --data @- "$SLACK_WEBHOOK_URL"

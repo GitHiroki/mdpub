@@ -73,7 +73,3 @@ python3 .claude/skills/mdpub-review/scripts/check_docs.py path/to/a.md
 人間の判断とレビュアーの判断が数回続けて一致したら、`auto-merge` に切り替える。
 スキル、ワークフロー、設定を変える PR は、モードによらず人間がマージする。
 
-## 補足
-
-- `check` が失敗しても、GitHub のマージボタンは押せる。人間が手でマージするときも止めたい場合は、Settings → Branches で main に保護ルールを作り、「Require status checks to pass」で `check` を必須にする
-- PR で `@claude` とメンションしても、今の設定では何も起きない。セッション中なら、Claude に PR を購読させればコメントが届く。セッションをまたいで呼び出したい場合は、Claude Code の GitHub Actions 連携（`anthropics/claude-code-action`）を入れる

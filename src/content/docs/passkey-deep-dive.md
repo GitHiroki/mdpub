@@ -3,10 +3,6 @@ title: パスキーの仕組みを深掘る
 description: 「生体認証＋公開鍵」の理解から出発し、チャレンジ・オリジン束縛・同期型・Discoverable Credential・Attestationまで壁打ちで掘り下げた記録
 tags: [passkey, webauthn, fido2, security, authentication]
 timestamp: 2026-10-15
-sidebar:
-  badge:
-    text: 新規
-    variant: tip
 ---
 
 ## 出発点

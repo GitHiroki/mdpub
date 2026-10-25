@@ -12,3 +12,4 @@
 ## 使い方
 
 `src/content/docs/` にmdを置いてpushするだけ。
+Claude に推敲から公開まで任せるときの流れは [docs/publishing-flow.md](docs/publishing-flow.md) を参照。

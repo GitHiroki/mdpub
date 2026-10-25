@@ -36,22 +36,24 @@ python3 .claude/skills/mdpub-deploy/scripts/update_badges.py
 結果が想定通りであることを確認してユーザーに報告する。
 おかしい場合（新規のはずが「更新」になっている等）はユーザーに確認を取る。
 
-### Step 3: commit & push する
+### Step 3: commit & push して PR を出す
 
-バッジ更新済みのファイルも含めて commit し、push する。
+作業ブランチで、バッジ更新済みのファイルも含めて commit し、push して main への PR を出す。
 
 ```bash
 git add src/content/docs/
 git commit -m "docs: <変更内容の要約>"
-git push
+git push -u origin <作業ブランチ>
 ```
 
 コミットメッセージは変更内容を日本語で簡潔に表現する。
+PR には `Check docs`（機械チェックとビルド）が自動で走る。
 
-### Step 4: デプロイ確認
+### Step 4: レビューしてマージする
 
-push 後、GitHub Actions が自動で Starlight をデプロイする。
-push が成功したことをユーザーに伝え、デプロイが自動実行される旨を案内する。
+`mdpub-review` スキルに従ってレビューし、基準を満たしていればマージする
+（`criteria.md` が `report-only` のときは、結果を報告してマージは人間に任せる）。
+main にマージされると、GitHub Actions が自動で Starlight をデプロイする。
 
 ---
 

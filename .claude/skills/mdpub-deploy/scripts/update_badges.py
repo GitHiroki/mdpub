@@ -3,15 +3,25 @@
 src/content/docs/ 配下のMarkdownファイルのfrontmatter sidebar.badge を、
 git diff結果に基づいて更新する。
 
+差分の基準は base ブランチ（既定: origin/main）と HEAD の merge-base。
+コミット済み・ステージ済み・作業ツリー・未追跡の変更をまとめて判定するので、
+同じブランチに何度コミットしても、main にないファイルは「新規」のままになる。
+差分が sidebar.badge だけのファイルは変更なしとして扱う。
+
 ルール:
   - sidebar.badge.text: info → スキップ（保護）
   - 追加(A) → sidebar.badge: {text: 新規, variant: tip}
   - 変更(M) → sidebar.badge: {text: 更新, variant: note}
   - diff対象外 → sidebar.badge を削除
+
+使い方:
+  python3 update_badges.py                 # origin/main との差分で判定
+  python3 update_badges.py --base origin/main
 """
 
 from __future__ import annotations
 
+import argparse
 import subprocess
 import sys
 from pathlib import Path
@@ -20,23 +30,62 @@ from typing import List, Optional, Tuple
 DOC_PATH = "src/content/docs/"
 
 
-def get_diff_files(repo_root: Path) -> Tuple[set, set]:
-    """git diff HEAD で追加(A)/変更(M)されたdocs配下のファイルパスを返す。"""
+def resolve_base(base: str, repo_root: Path) -> str:
+    """base と HEAD の merge-base を返す。取れなければ HEAD にフォールバックする。"""
+    result = subprocess.run(
+        ["git", "merge-base", base, "HEAD"],
+        capture_output=True, text=True, cwd=repo_root
+    )
+    if result.returncode == 0 and result.stdout.strip():
+        return result.stdout.strip()
+    print(
+        f"警告: {base} との merge-base が取れないため HEAD との差分で判定します"
+        f"（git fetch origin main を実行してから再実行してください）",
+        file=sys.stderr,
+    )
+    return "HEAD"
+
+
+def strip_badge(content: str) -> str:
+    """sidebar.badge を取り除いた内容を返す（バッジだけの差分を無視するため）。"""
+    fm_lines, body = split_frontmatter(content)
+    if fm_lines is None:
+        return content
+    return "\n".join(rebuild_frontmatter(fm_lines, None, None)) + "\n---" + body
+
+
+def is_badge_only_change(base_ref: str, path: str, repo_root: Path) -> bool:
+    """base_ref の版と作業ツリーの版の差分が sidebar.badge だけなら True。"""
+    old = subprocess.run(
+        ["git", "show", f"{base_ref}:{path}"],
+        capture_output=True, text=True, cwd=repo_root
+    )
+    if old.returncode != 0:
+        return False
+    current = (repo_root / path).read_text(encoding="utf-8")
+    return strip_badge(old.stdout) == strip_badge(current)
+
+
+def get_diff_files(repo_root: Path, base_ref: str) -> Tuple[set, set]:
+    """base_ref から見て追加(A)/変更(M)されたdocs配下のファイルパスを返す。
+
+    git diff <base_ref> は作業ツリーとの比較なので、コミット済み・ステージ済み・
+    未ステージの変更をまとめて拾う。
+    """
     added, modified = set(), set()
 
-    for cmd in [
-        ["git", "diff", "HEAD", "--name-status", "--diff-filter=AM", "--", DOC_PATH],
-        ["git", "diff", "--cached", "--name-status", "--diff-filter=AM", "--", DOC_PATH],
-    ]:
-        result = subprocess.run(cmd, capture_output=True, text=True, cwd=repo_root)
-        for line in result.stdout.splitlines():
-            parts = line.split("\t", 1)
-            if len(parts) == 2:
-                status, path = parts
-                if status.startswith("A"):
-                    added.add(path)
-                elif status.startswith("M"):
-                    modified.add(path)
+    result = subprocess.run(
+        ["git", "diff", base_ref, "--name-status", "--diff-filter=AM", "--", DOC_PATH],
+        capture_output=True, text=True, cwd=repo_root
+    )
+    for line in result.stdout.splitlines():
+        parts = line.split("\t", 1)
+        if len(parts) == 2:
+            status, path = parts
+            if status.startswith("A"):
+                added.add(path)
+            elif status.startswith("M") and not is_badge_only_change(base_ref, path, repo_root):
+                modified.add(path)
 
     # 未追跡ファイル（git addされていない新規ファイル）も追加扱いにする
     result_untracked = subprocess.run(
@@ -259,6 +308,10 @@ def process_file(
 
 
 def main():
+    parser = argparse.ArgumentParser(description="docs 配下のサイドバーバッジを更新する")
+    parser.add_argument("--base", default="origin/main", help="差分の基準（既定: origin/main）")
+    args = parser.parse_args()
+
     result = subprocess.run(
         ["git", "rev-parse", "--show-toplevel"],
         capture_output=True, text=True
@@ -274,7 +327,8 @@ def main():
         print(f"エラー: {doc_dir} が存在しません", file=sys.stderr)
         sys.exit(1)
 
-    added, modified = get_diff_files(repo_root)
+    base_ref = resolve_base(args.base, repo_root)
+    added, modified = get_diff_files(repo_root, base_ref)
 
     counts = {"新規": 0, "更新": 0, "クリア": 0, "スキップ(info)": 0}
     results = []

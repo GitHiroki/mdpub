@@ -20,6 +20,8 @@ python3 .claude/skills/mdpub-deploy/scripts/update_badges.py
 ```
 
 スクリプトが `src/content/docs/` 配下の全Markdownを走査し、git diff結果に基づいてbadgeを付け替える。
+差分の基準は `origin/main` と HEAD の merge-base なので、同じブランチに何度コミットしても判定は変わらない。
+実行前に `git fetch origin main` しておく（merge-base が取れないときは警告を出し、HEAD との差分で判定する）。
 
 ### Step 2: スクリプトの結果を確認する
 
@@ -63,7 +65,7 @@ main にマージされると、GitHub Actions が自動で Starlight をデプ�
 |---------|------|------|
 | `info` | 手動付与・保護対象 | スクリプトは絶対に触らない |
 | `新規` | 今回追加されたファイル | git diff で A(追加) のもの |
-| `更新` | 今回変更されたファイル | git diff で M(変更) のもの |
+| `更新` | 今回変更されたファイル | git diff で M(変更) のもの（差分が badge だけのものは除く） |
 | なし | 変更なし | badge フィールドを削除 |
 
 Starlight は frontmatter の `badge` フィールドで設定。1ページにつき1つのみ。
